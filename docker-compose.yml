@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - neo4j
+
+  neo4j:
+    image: neo4j:5.13
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/yourpassword
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
