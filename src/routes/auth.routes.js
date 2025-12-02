@@ -28,10 +28,13 @@ router.post("/otp/request", authController.requestOTP);
  */
 router.post("/otp/verify", authController.verifyOTP);
 
+router.post("/otp/whatsapp/request", authController.requestWhatsAppOTP);
+router.post("/otp/whatsapp/verify", authController.verifyWhatsAppOTP);
 /**
  * @route POST /auth/logout
  * @desc Logout user
  */
 router.post("/logout", authenticateJWT, authController.logout);
+
 
 export default router;

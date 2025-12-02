@@ -1,4 +1,5 @@
 import redis from "../db/redis.connect.js";
+import WhatsAppService from "./whatsapp.service.js";
 
 class OTPService {
   async generateOTP(phone) {
@@ -10,10 +11,26 @@ class OTPService {
 
   async verifyOTP(phone, otp) {
     const stored = await redis.get(`otp:${phone}`);
-    if (stored !== otp) throw new Error("Invalid OTP");
+    if (!stored || stored !== otp) throw new Error("Invalid OTP");
     await redis.del(`otp:${phone}`);
     return true;
   }
+
+  async generateWhatsAppOTP(phone) {
+      // Reuse the same Redis storage and OTP generation
+      const otp = await this.generateOTP(phone);
+      
+      // Mock sending via WhatsApp
+      console.log(`Sending OTP via WhatsApp to ${phone}: ${otp}`);
+      await WhatsAppService.sendOTP(phone, otp);
+      // Later: integrate Twilio / WhatsApp API here
+      return otp;
+    }
+
+    async verifyWhatsAppOTP(phone, otp) {
+      // Verification logic is identical
+      return this.verifyOTP(phone, otp);
+    }
 }
 
 export default new OTPService();

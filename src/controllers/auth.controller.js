@@ -51,6 +51,28 @@ class AuthController {
       next(err);
     }
   }
+
+  // WhatsApp OTP request
+  async requestWhatsAppOTP(req, res, next) {
+    try {
+      const { phone } = req.body;
+      const otp = await otpService.generateWhatsAppOTP(phone);
+      res.json({ message: "WhatsApp OTP sent (mock)", otp });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // WhatsApp OTP verification
+  async verifyWhatsAppOTP(req, res, next) {
+    try {
+      const { phone, otp } = req.body;
+      await otpService.verifyWhatsAppOTP(phone, otp);
+      res.json({ message: "WhatsApp OTP verified" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default new AuthController();
