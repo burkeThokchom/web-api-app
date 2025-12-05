@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 # ===== RUN STAGE =====
-FROM node:18-alpine
+FROM node:20.18.0-alpine
 
 WORKDIR /app
 
